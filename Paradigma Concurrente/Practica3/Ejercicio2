@@ -1,0 +1,118 @@
+programa Ejercicio2
+procesos
+  proceso juntarPapeles(ES papeles: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles + 1
+  fin
+  
+  proceso juntarFlores(ES flores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+  
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  
+  proceso lado2
+  comenzar
+    repetir 2
+      mover
+  fin
+  
+  proceso lado3
+  comenzar
+    repetir 3 
+      mover
+  fin
+
+  proceso parteFlores(ES flores:numero)
+  comenzar
+    derecha
+    lado3
+    BloquearEsquina(PosAv + 1, PosCa)
+    mover 
+    juntarFlores(flores)
+    izquierda
+    mover
+    LiberarEsquina(PosAv, PosCa - 1)
+    mover
+    BloquearEsquina(PosAv, PosCa + 1)
+    mover
+    juntarFlores(flores)
+    izquierda
+    mover
+    LiberarEsquina(PosAv + 1, PosCa)
+    lado3
+    derecha
+    lado3
+  fin
+    
+  proceso partePapeles(ES papeles:numero)
+  comenzar
+    izquierda
+    lado3
+    BloquearEsquina(PosAv - 1, PosCa)
+    mover 
+    juntarPapeles(papeles)
+    derecha
+    mover
+    LiberarEsquina(PosAv, PosCa - 1)
+    mover
+    BloquearEsquina(PosAv, PosCa + 1)
+    mover
+    derecha
+    juntarPapeles(papeles)
+    mover
+    LiberarEsquina(PosAv - 1, PosCa)
+    lado3
+    izquierda
+    lado3
+  fin
+
+areas
+  zona0: AreaC(5,1,5,19)
+  zona1: AreaP(1,1,4,19)
+  zona2: AreaP(6,1,9,19)
+  
+robots
+  robot tipo1
+  variables
+    flores: numero
+  comenzar
+    flores:= 0
+    repetir 3
+      parteFlores(flores)
+    Informar(flores)
+  fin
+
+  robot tipo2
+  variables
+    papeles: numero
+  comenzar
+    papeles:= 0
+    repetir 3
+      partePapeles(papeles)
+    Informar(papeles)
+  fin
+
+variables
+  bee1: tipo1
+  bee2: tipo2
+comenzar
+  AsignarArea(bee1, zona1)
+  AsignarArea(bee2, zona2)
+  
+  AsignarArea(bee1, zona0)
+  AsignarArea(bee2, zona0)
+  
+  Iniciar(bee1, 1,1)
+  Iniciar(bee2, 9,1)
+fin
+

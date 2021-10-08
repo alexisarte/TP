@@ -1,0 +1,116 @@
+{
+2. Realice un programa en el que 3 robots realizan una escalera de 4 escalones cada
+uno. Todos los escalones tienen un ancho fijo de 1, y un alto aleatorio entre 1 y 5. Al
+finalizar el recorrido, cada robot deberá enviar al robot jefe la cantidad de escalones
+que tenían más flores que papeles. Una vez que los tres robots finalizaron, el robot
+jefe deberá informar la suma de las cantidades enviadas por los 3 robots.
+○ El robot jefe inicia en la esquina (1,1)
+○ El robot 1 inicia en la esquina (2,1)
+○ El robot 2 inicia en la esquina (7,1)
+○ El robot 3 inicia en la esquina (12,1)
+}
+
+programa Ejercicio2
+
+procesos
+  proceso izquierda
+  comenzar 
+    repetir 3
+      derecha
+  fin
+
+  proceso contarPapeles(ES papeles: numero)      
+  variables
+    aux: numero
+  comenzar
+    aux:= 0
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      aux:= aux + 1
+    papeles:= papeles + aux
+    repetir aux
+      depositarPapel
+  fin
+
+  
+  proceso contarFlores(ES flores: numero)
+  variables
+    aux: numero
+  comenzar
+    aux:= 0
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor 
+      aux:= aux + 1
+    flores:= flores + aux
+    repetir aux 
+      depositarFlor
+  fin
+
+
+  proceso escalon (E altura: numero; ES escalones: numero )
+  variables
+    flores, papeles: numero
+  comenzar   
+    flores:= 0
+    papeles:= 0
+    repetir altura
+      contarPapeles(papeles)
+      contarFlores(flores)
+      mover
+    contarPapeles(papeles)
+    contarFlores(flores)
+    derecha  
+    mover
+    contarPapeles(papeles)
+    contarFlores(flores)
+    izquierda
+    si(flores > papeles)
+      escalones:= escalones + 1
+  fin
+
+areas
+  ciudad: AreaC(1,1,100,100)
+
+robots 
+  robot tipo1
+  variables
+    escalones, altura: numero
+  comenzar
+    escalones:= 0
+    Random(altura, 1, 5)
+    repetir 4
+      escalon(altura, escalones)
+    EnviarMensaje(escalones, fiscal)
+  fin    
+  
+  robot tipo2
+  variables
+    escalones: numero
+    totEscalones: numero
+  comenzar
+    totEscalones:= 0
+    repetir 3
+      RecibirMensaje(escalones, *)
+      totEscalones:= totEscalones + escalones
+    Informar(totEscalones)
+  fin
+
+
+variables
+  bee1: tipo1
+  bee2: tipo1
+  bee3: tipo1
+  fiscal: tipo2
+  
+  
+comenzar
+  AsignarArea(bee1, ciudad)
+  AsignarArea(bee2, ciudad)
+  AsignarArea(bee3, ciudad)
+  AsignarArea(fiscal, ciudad)
+  Iniciar(bee1, 2,1)
+  Iniciar(bee2, 7,1)
+  Iniciar(bee3, 12,1)
+  Iniciar(fiscal, 1,1)
+fin      
+

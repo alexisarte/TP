@@ -1,0 +1,107 @@
+programa ejercicio5
+procesos
+  proceso juntarPapel(ES exito: boolean)
+  comenzar
+    si(HayPapelEnLaEsquina)
+      tomarPapel  
+    sino 
+      exito:= F
+  fin
+
+  proceso maximo(E posCa: numero; ES max:numero; ES maxID:numero; E ID:numero)
+  comenzar
+    si(posCa > max)      
+      max:= posCa
+      maxID:= ID
+    sino
+      si(posCa = max)
+        maxID:= 0
+  fin
+
+areas
+  zona0: AreaP(4,1,4,100)
+  zona1: AreaP(6,1,6,100)
+  zona2: AreaP(8,1,8,100)
+  zona3: AreaP(10,1,10,100)
+  zonaVIP: AreaP(1,1,1,1)
+  zonaT: AreaP(11,11,11,11)
+  
+robots
+  robot tipo1
+  variables
+    exito : boolean
+    posAv, posCa, ID: numero
+  comenzar  
+    exito:= V
+    RecibirMensaje(ID, coordinador)
+    posAv:= PosAv
+    posCa:= PosCa
+    mientras(PosCa < 100  &  exito = V)
+      BloquearEsquina(11,11)
+      Pos(11, 11)
+      juntarPapel(exito)
+      Pos(posAv, posCa)
+      LiberarEsquina(11,11)
+      si(exito = V)
+        depositarPapel
+        mover
+        posAv:= PosAv
+        posCa:= PosCa
+    EnviarMensaje(ID, coordinador)
+    EnviarMensaje(posCa, coordinador)
+  fin
+  
+  robot tipo2
+  variables
+    ID, maxID, max, posCa: numero
+  comenzar
+    maxID:= 0
+    max:= -1
+    EnviarMensaje(1, bee1)
+    EnviarMensaje(2, bee2)
+    EnviarMensaje(3, bee3)
+    EnviarMensaje(4, bee4)
+    
+    repetir 4
+      RecibirMensaje(ID, *)
+      si(ID = 1)
+        RecibirMensaje(posCa, bee1) 
+      sino 
+        si(ID = 2)
+          RecibirMensaje(posCa, bee2)
+        sino 
+          si(ID = 3)
+            RecibirMensaje(posCa, bee3)
+          sino 
+            RecibirMensaje(posCa, bee4)
+      maximo(posCa, max, maxID, ID)
+    si(maxID <> 0)
+      Informar(maxID) 
+  fin
+  
+variables
+  bee1: tipo1
+  bee2: tipo1
+  bee3: tipo1
+  bee4: tipo1
+  coordinador: tipo2    
+  
+comenzar
+  AsignarArea(coordinador, zonaVIP)
+  AsignarArea(bee1, zona0)
+  AsignarArea(bee2, zona1)  
+  AsignarArea(bee3, zona2)
+  AsignarArea(bee4, zona3)
+  
+  AsignarArea(bee1, zonaT)
+  AsignarArea(bee2, zonaT)  
+  AsignarArea(bee3, zonaT)
+  AsignarArea(bee4, zonaT)
+  
+  Iniciar(coordinador, 1,1)
+  Iniciar(bee1, 4,1)
+  Iniciar(bee2, 6,1)
+  Iniciar(bee3, 8,1)
+  Iniciar(bee4, 10,1) 
+fin
+

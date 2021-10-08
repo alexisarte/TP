@@ -1,0 +1,63 @@
+{
+Ejercicio 2a: Se tienen dos robots: el robot 1 debe realizar un rectángulo de 5 (alto) x 3 (ancho) juntando flores y el robot 2 un rectángulo de 8 (alto) x 2 (ancho) juntando flores. Un robot jefe debe informar la cantidad total de flores juntadas entre ambos robots.
+}
+
+programa Ejercicio2a
+
+procesos
+  proceso juntarFlores(ES flores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+  
+  proceso rectangulo(E base: numero; E altura: numero; ES flores: numero) 
+  comenzar
+    repetir 2
+      repetir altura
+        juntarFlores(flores)
+        mover
+      derecha
+      repetir base
+        juntarFlores(flores)
+        mover
+      derecha
+  fin
+  
+  proceso hacer
+  comenzar
+    RecibirMensaje(alto, robotPadre)
+    RecibirMensaje(ancho, robotPadre)
+    rectangulo(alto, ancho)
+  fin
+areas
+  area: AreaP(2,2,5,7)
+  
+robots 
+  robot tipo1
+  variables
+    flores: numero
+  comenzar
+    flores:= 0
+    rectangulo(3,5,flores)
+    Informar(flores)
+  fin
+  
+  robot tipo3
+  comenzar  
+    EnviarMensaje(5, robot1)
+    EnviarMensaje(3, robot1)
+    EnviarMensaje(8, robot2)
+    EnviarMensaje(2, robot2)
+ fin
+
+variables
+  robot1: tipo1  
+  robotPadre:tipo3
+
+comenzar
+  AsignarArea(robot1, area)
+  Iniciar(robot1, 2,2)
+fin
+

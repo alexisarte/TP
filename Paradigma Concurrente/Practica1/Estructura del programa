@@ -1,0 +1,18 @@
+programa nombre 
+
+procesos 
+  // Procesos utilizados por los robots
+
+areas
+  // Áreas de la ciudad
+
+robots 
+  // Robots del programa
+    
+variables 
+  // Variables robots
+
+comenzar
+  // Asignación de áreas 
+  // Inicialización de robots 
+fin

@@ -1,0 +1,104 @@
+programa ejercicio4
+procesos
+  
+  proceso juntarFlor(ES flores: numero; ES exito: boolean)
+  comenzar
+    si(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+    sino 
+      exito:= F
+  fin
+  
+  proceso recolectarFlores
+  comenzar
+    Pos(11,11)
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+    Pos(1,1)
+  fin
+
+areas
+  zonaC: AreaP(1,1,1,1)
+  zona0: AreaP(9,9,9,9)
+  zona1: AreaP(9,10,9,10)
+  zona2: AreaP(9,11,9,11)
+  zona3: AreaP(9,12,9,12)
+  zonaA: AreaPC(10,10,10,10)
+  zonaB: AreaC(11,11,11,11)
+
+robots
+  robot tipo1
+  variables
+    flores, posInicial, ID: numero
+    exito: boolean
+  comenzar
+    posInicial:= PosCa 
+    RecibirMensaje(ID, coordinador)
+    exito:= V
+    mientras(exito)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      juntarFlor(flores, exito)    
+      si(exito)
+        BloquearEsquina(11,11)
+        Pos(11,11)
+        LiberarEsquina(10, 10)
+        depositarFlor
+        Pos(9, posInicial) 
+        LiberarEsquina(11, 11)
+      sino
+        Pos(9, posInicial)
+        LiberarEsquina(10, 10)
+    EnviarMensaje(ID, coordinador)
+  fin
+ 
+  robot tipo2
+  variables
+    ID: numero
+  comenzar
+    EnviarMensaje(1, bee1)
+    EnviarMensaje(2, bee2)
+    EnviarMensaje(3, bee3)
+    EnviarMensaje(4, bee4)
+    
+    repetir 4
+      RecibirMensaje(ID, *)
+    Informar(ID)
+    recolectarFlores     
+  fin
+ 
+variables
+  bee1: tipo1
+  bee2: tipo1
+  bee3: tipo1
+  bee4: tipo1
+  coordinador: tipo2
+ 
+comenzar
+  AsignarArea(coordinador, zonaB)
+  AsignarArea(coordinador, zonaC)
+  
+  AsignarArea(bee1, zonaA)
+  AsignarArea(bee2, zonaA)
+  AsignarArea(bee3, zonaA)
+  AsignarArea(bee4, zonaA)
+
+  AsignarArea(bee1, zonaB)
+  AsignarArea(bee2, zonaB)
+  AsignarArea(bee3, zonaB)
+  AsignarArea(bee4, zonaB)
+  
+  AsignarArea(bee1, zona0)
+  AsignarArea(bee2, zona1)
+  AsignarArea(bee3, zona2)
+  AsignarArea(bee4, zona3)
+  
+  Iniciar(coordinador, 1,1)
+  Iniciar(bee1, 9,9)
+  Iniciar(bee2, 9,10)
+  Iniciar(bee3, 9,11)
+  Iniciar(bee4, 9,12)
+fin
+
+

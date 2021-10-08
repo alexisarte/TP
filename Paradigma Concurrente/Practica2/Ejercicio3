@@ -1,0 +1,91 @@
+{
+3. Realice un programa con 2 equipos:
+- El equipo A, compuesto por los robots A1 y A2, debe juntar papeles las primeras
+20 esquinas de la calle 1
+- El equipo B, compuesto por los robots B1 y B2, debe juntar flores las primeras 20
+esquinas de la calle 5
+
+Los robots A1 y B1 deberán realizar las 10 primeras esquinas de su recorrido, y al finalizar
+avisarán a los robots A2 y B2 respectivamente para que continúen con las siguientes 10
+esquinas. El segundo robot de cada equipo debe informar la cantidad de elementos
+recogidos en las 20 esquinas
+}
+
+programa Ejercicio3
+procesos 
+  proceso juntarPapeles(ES papeles: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles + 1
+  fin
+  
+  proceso juntarFlores(ES flores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+
+  
+areas
+  zonaA: AreaPC(1,1,20,1)
+  zonaB: AreaPC(1,5,20,5)
+  
+  
+robots
+  robot tipoA
+  variables
+    papeles, total: numero
+  comenzar
+    derecha
+    si(PosAv = 11)
+      RecibirMensaje(total, beeA1)
+    juntarPapeles(papeles)
+    repetir 9
+      mover
+      juntarPapeles(papeles)
+    si(PosAv = 10)
+      EnviarMensaje(papeles, beeA2)
+    sino
+      total:= total + papeles
+      Informar(total)
+  fin   
+
+  robot tipoB
+  variables
+    flores, total: numero
+  comenzar
+    derecha
+    si(PosAv = 11)
+      RecibirMensaje(total, beeB1)
+    juntarFlores(flores)
+    repetir 9
+      mover
+      juntarFlores(flores)
+    si(PosAv = 10)
+      EnviarMensaje(flores, beeB2)
+    sino
+      total:= total + flores
+      Informar(total)
+  fin   
+
+variables
+  beeA1: tipoA
+  beeB1: tipoB
+  beeA2: tipoA
+  beeB2: tipoB
+
+comenzar
+  AsignarArea(beeA1, zonaA)
+  AsignarArea(beeA2, zonaA)
+  AsignarArea(beeB1, zonaB)
+  AsignarArea(beeB2, zonaB)
+  Iniciar(beeA1, 1,1)
+  Iniciar(beeB1, 1,5)
+  Iniciar(beeA2, 11,1)
+  Iniciar(beeB2, 11,5)
+fin  
+  
+  
+

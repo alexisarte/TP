@@ -1,0 +1,123 @@
+programa ej02PrRepaso
+procesos 
+  proceso juntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)    
+      tomarFlor
+  fin
+
+  proceso juntarPapeles
+  comenzar
+    mientras(HayPapelEnLaEsquina)    
+      tomarPapel
+  fin
+  
+areas
+  zonaCer0: AreaP(1,1,1,1)
+  zona1: AreaP(2,1,2,1)
+  zona2: AreaP(3,1,3,1)
+  zona3: AreaP(4,1,4,1)
+  zona4: AreaP(5,1,5,1)
+  zona5: AreaPC(5,5,15,20)
+  zona6: AreaPC(25,5,35,20)
+
+robots
+  robot tipoFlor
+  variables
+    ID, posAv: numero
+  comenzar
+    RecibirMensaje(ID, fiscal)
+    RecibirMensaje(posAv, fiscal)
+    BloquearEsquina(posAv,5)
+    Pos(posAv,5)
+    juntarFlores
+    mover
+    LiberarEsquina(posAv,5)
+    repetir 14
+      juntarFlores
+      mover
+    juntarFlores
+    EnviarMensaje(ID, fiscal)
+  fin
+  
+  robot tipoPapel
+  variables
+    ID, posAv: numero
+  comenzar
+    derecha
+    RecibirMensaje(ID, fiscal)
+    RecibirMensaje(posAv, fiscal)
+    BloquearEsquina(posAv,5)
+    Pos(posAv,5)
+    juntarPapeles
+    mover
+    LiberarEsquina(posAv,5)
+    repetir 9
+      juntarPapeles
+      mover
+    juntarPapeles
+    EnviarMensaje(ID, fiscal)
+  fin
+
+  robot tipoFiscal
+  variables
+    ID, EQ1, EQ2, ganador: numero
+  comenzar
+    EnviarMensaje(1, R1E1)
+    EnviarMensaje(2, R1E2)
+    EnviarMensaje(2, R2E2)
+    EnviarMensaje(1, R2E1)
+
+    EnviarMensaje(5, R1E1)
+    EnviarMensaje(5, R2E1)
+    EnviarMensaje(25, R2E2)
+    EnviarMensaje(25, R1E2)
+
+    EQ1:= 0 
+    EQ2:= 0
+    ganador:= 0
+    repetir 3
+      RecibirMensaje(ID, *)    
+      si(ID = 1)
+        si(EQ1 = 0)
+          EQ1:= EQ1 + 1    
+        sino 
+          ganador:= EQ1
+      sino 
+        si(EQ2 = 0)    
+          EQ2:= EQ2 + 1
+        sino    
+          ganador:= EQ2 + 1
+    RecibirMensaje(ID, *)
+    si(ganador <> 0)
+      Informar(ganador)
+  fin
+
+variables
+  fiscal: tipoFiscal
+  R1E1: tipoFlor  
+  R2E1: tipoPapel
+  R1E2: tipoFlor
+  R2E2: tipoPapel
+
+comenzar
+  AsignarArea(fiscal, zonaCer0)
+  AsignarArea(R1E1, zona1)
+  AsignarArea(R2E1, zona2)
+  AsignarArea(R1E2, zona3)
+  AsignarArea(R2E2, zona4)
+  
+  AsignarArea(R1E1, zona5)
+  AsignarArea(R2E1, zona5)
+  AsignarArea(R1E2, zona6)
+  AsignarArea(R2E2, zona6)
+
+  Iniciar(fiscal, 1,1)
+  Iniciar(R1E1, 2,1)
+  Iniciar(R2E1, 3,1)
+  Iniciar(R1E2, 4,1)
+  Iniciar(R2E2, 5,1)
+fin  
+  
+  
+

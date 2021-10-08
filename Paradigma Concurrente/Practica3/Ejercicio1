@@ -1,0 +1,111 @@
+programa ejercicio1
+procesos
+  proceso juntarPapeles(ES papeles: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles + 1
+  fin
+  
+  proceso juntarFlores(ES flores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+  
+  proceso depositarFlores(E flores: numero; E posInicial: numero)
+  comenzar
+    repetir flores
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarFlor
+      Pos(posInicial, 10)
+      LiberarEsquina(10,10)
+  fin 
+  
+  proceso depositarPapeles(E papeles: numero; E posInicial: numero)
+  comenzar
+    repetir papeles
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarPapel
+      Pos(posInicial, 10)
+      LiberarEsquina(10,10)
+  fin  
+ 
+
+areas
+  zonaF: AreaPC(1,1,5,10)
+  zonaP: AreaPC(6,1,10,9)
+  zona1: AreaP(6,10,6,10)
+  zona2: AreaP(7,10,7,10)
+  zona3: AreaP(8,10,8,10)
+  zona4: AreaP(9,10,9,10)
+  zona10: AreaPC(10,10,10,10)
+robots
+  robot tipoFlor
+  variables
+    flores: numero
+    posAv, posCa, posInicial: numero
+  comenzar
+    posInicial:= PosAv
+    flores:= 0
+    repetir 3
+      Random(posAv, 1,5)
+      Random(posCa, 1,10)
+      BloquearEsquina(posAv, posCa)
+      Pos(posAv, posCa)
+      juntarFlores(flores)
+      Pos(posInicial, 10)
+      LiberarEsquina(posAv, posCa)
+    depositarFlores(flores, posInicial)  
+  fin
+  
+  robot tipoPapel
+  variables
+    papeles: numero
+    posAv, posCa, posInicial: numero
+  comenzar
+    posInicial:= PosAv
+    papeles:= 0
+    repetir 5
+      Random(posAv, 6,10)
+      Random(posCa, 1,9)
+      BloquearEsquina(posAv, posCa)
+      Pos(posAv, posCa)
+      juntarPapeles(papeles)
+      Pos(posInicial, 10)
+      LiberarEsquina(posAv, posCa)
+    depositarPapeles(papeles, posInicial)  
+  fin
+
+  
+variables
+  florero1: tipoFlor
+  florero2: tipoFlor
+  papelero1: tipoPapel  
+  papelero2: tipoPapel
+
+comenzar
+  AsignarArea(florero1, zonaF) 
+  AsignarArea(florero2, zonaF)
+  AsignarArea(papelero1, zonaP)
+  AsignarArea(papelero2, zonaP)
+  AsignarArea(florero1, zona1) 
+  AsignarArea(florero2, zona2)
+  AsignarArea(papelero1, zona3)
+  AsignarArea(papelero2, zona4)
+  AsignarArea(florero1, zona10) 
+  AsignarArea(florero2, zona10)
+  AsignarArea(papelero1, zona10)
+  AsignarArea(papelero2, zona10)
+
+
+  Iniciar(florero1, 6,10)
+  Iniciar(florero2, 7,10)
+  Iniciar(papelero1, 8,10)
+  Iniciar(papelero2, 9,10)
+fin
+
+

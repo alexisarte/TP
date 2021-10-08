@@ -1,0 +1,103 @@
+{
+5) Realice un programa en el que cuatro robots realizan las siguientes actividades:
+-El robot 1 debe limpiar de flores las primeras 20 esquinas de las calles 75 y 80. Al
+finalizar cada calle, debe depositar todas las flores en la ultima esquina.
+-El robot 2 debe limpiar de papeles las ultimas 20 esquinas de las avenidas 75 y 80. Al
+finalizar cada avenida debe depositar todos los papeles en la primera esquina.
+-El robot 3 debe limpiar de flores las ultimas 20 esquinas de las calles 10 y 15. Al
+finalizar cada calle, debe depositar todas las flores en la ultima esquina.
+-El robot 4 debe limpiar de papeles las primeras 20 esquinas de las avenidas 10 y 15.
+Al finalizar cada avenida debe depositar todos los papeles en la primera esquina.
+}
+
+programa Ejercicio5
+
+procesos
+
+  proceso juntarFlores(ES flores: numero)
+  comenzar 
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1 
+  fin
+  
+  proceso juntarPapeles(ES papeles: numero)
+  comenzar   
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles + 1
+  fin
+
+  proceso depositarPapeles(E papeles: numero)
+  comenzar
+    repetir papeles
+      depositarPapel  
+  fin
+  
+  proceso depositarFlores(E flores: numero)
+  comenzar
+    repetir flores
+      depositarFlor
+  fin
+  
+  proceso levantarPapeles
+  variables
+    papeles: numero
+  comenzar
+    papeles:= 0
+    repetir 20
+      juntarPapeles(papeles)
+      mover
+    juntarPapeles(papeles)
+    Pos(PosAv, PosCa - 20)
+    depositarPapeles(papeles)
+  fin
+  
+  proceso levantarFlores
+  variables
+    flores: numero
+  comenzar
+    flores:= 0
+    repetir 20
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+    depositarFlores(flores)
+  fin
+ 
+areas 
+  ciudad: AreaC(1,1,100,100)
+
+robots
+  robot tipo1
+  comenzar
+    derecha
+    levantarFlores
+    Pos(PosAv - 20, PosCa + 5)
+    levantarFlores
+  fin
+
+  robot tipo2
+  comenzar
+    levantarPapeles
+    Pos(PosAv + 5, PosCa)
+    levantarPapeles
+  fin
+  
+variables
+  robot1: tipo1
+  robot2: tipo2
+  robot3: tipo1
+  robot4: tipo2
+comenzar
+  AsignarArea(robot1, ciudad)
+  AsignarArea(robot2, ciudad)
+  AsignarArea(robot3, ciudad)
+  AsignarArea(robot4, ciudad)
+  Iniciar(robot1, 1,75) 
+  Iniciar(robot2, 75,80)
+  Iniciar(robot3, 80,10)
+  Iniciar(robot4, 10,1)
+  
+fin
+

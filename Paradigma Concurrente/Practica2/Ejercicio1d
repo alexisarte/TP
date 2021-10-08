@@ -1,0 +1,121 @@
+{
+d. Modifique el inciso anterior para que ahora el fiscalizador informe tambiÃ©n, cuÃ¡l
+fue el robot ganador
+}
+
+programa Ejercicio1d
+procesos 
+  proceso juntarFlores(ES flores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+  
+  proceso recorrerNueve(ES flores: numero)
+  comenzar
+    repetir 9
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores) 
+  fin
+  
+  proceso maximo(ES ganador: numero; E ID: numero; ES maxFlores: numero; E flores: numero)
+  comenzar
+    si(flores >  maxFlores)
+      maxFlores:= flores
+      ganador:= ID
+    sino   
+      si(flores = maxFlores)
+        maxFlores:= 0
+  fin
+  
+areas
+  area1: AreaP(1,1,1,10)
+  area2: AreaP(2,11,2,20)
+  area3: AreaP(3,21,3,30)
+  area4: AreaP(4,31,4,40)
+  area5: AreaP(5,41,5,50)
+  area6: AreaP(6,51,6,60)
+  area7: AreaP(2,1,2,1)
+
+robots
+  robot tipo1
+  variables
+    flores: numero
+    ID: numero
+  comenzar
+    flores:= 0
+    RecibirMensaje(ID, fiscal)
+    recorrerNueve(flores)
+    EnviarMensaje(ID, fiscal)
+    EnviarMensaje(flores, fiscal)
+  fin
+
+  robot tipo2
+  variables
+    maxFlores:numero
+    flores: numero
+    maximo: numero
+    ID: numero
+    ganador: numero
+  comenzar
+    maxFlores:= 0
+    flores:= 0 
+    ganador:= 0
+    EnviarMensaje(1, bee1)
+    EnviarMensaje(2, bee2)
+    EnviarMensaje(3, bee3)
+    EnviarMensaje(4, bee4)
+    EnviarMensaje(5, bee5)
+    EnviarMensaje(6, bee6)
+    repetir 6
+      RecibirMensaje(ID, *)
+      si(ID = 1)
+        RecibirMensaje(flores, bee1)
+      sino
+        si(ID = 2)
+          RecibirMensaje(flores, bee2)
+        sino 
+          si(ID = 3)
+            RecibirMensaje(flores, bee3)
+          sino
+            si(ID = 4)
+              RecibirMensaje(flores, bee4)
+            sino 
+              si(ID = 5)
+                RecibirMensaje(flores, bee5)
+              sino 
+                si(ID = 6)
+                  RecibirMensaje(flores, bee6)
+      maximo(ganador, ID, maxFlores, flores)
+    si(maxFlores <> 0)
+      Informar(ganador, maxFlores)
+  fin
+  
+variables
+  bee1: tipo1
+  bee2: tipo1
+  bee3: tipo1
+  bee4: tipo1
+  bee5: tipo1
+  bee6: tipo1
+  fiscal: tipo2
+  
+  
+comenzar
+  AsignarArea(bee1, area1)
+  AsignarArea(bee2, area2)
+  AsignarArea(bee3, area3)
+  AsignarArea(bee4, area4)
+  AsignarArea(bee5, area5)
+  AsignarArea(bee6, area6)
+  AsignarArea(fiscal, area7)
+  Iniciar(bee1, 1,1)
+  Iniciar(bee2, 2,11)
+  Iniciar(bee3, 3,21)
+  Iniciar(bee4, 4,31)
+  Iniciar(bee5, 5,41)
+  Iniciar(bee6, 6,51)
+  Iniciar(fiscal, 2,1)
+fin

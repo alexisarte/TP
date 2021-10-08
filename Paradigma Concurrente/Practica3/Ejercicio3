@@ -1,0 +1,121 @@
+programa ejecicio3
+procesos
+  proceso juntarFlor(ES flores: numero; ES exito: boolean)
+  comenzar
+    si(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+    sino 
+      exito:= F
+  fin
+  
+  proceso maximo(ES maxID:numero; ES max:numero; E flores:numero; E ID:numero)
+  comenzar
+    si(flores > max)      
+      max:= flores
+      maxID:= ID
+    sino
+      si(flores = max)
+        maxID:= 0
+  fin
+  
+areas
+  zona1: AreaPC(2,1,5,1)
+  zona2: AreaPC(2,2,10,10)
+  zonaF: AreaP(1,1,1,1)
+  
+robots
+  robot tipo1
+  variables
+    flores: numero
+    posAv, posCa: numero
+    posInicial: numero
+    ID: numero
+    exito: boolean
+  comenzar    
+    flores:= 0
+    posInicial:= PosAv    
+    RecibirMensaje(ID, fiscal)   
+    RecibirMensaje(posAv, fiscal)   
+    RecibirMensaje(posCa, fiscal)
+    exito:= V
+    mientras(exito)
+      BloquearEsquina(posAv, posCa)
+      Pos(posAv, posCa)
+      juntarFlor(flores, exito)
+      Pos(posInicial, 1)
+      LiberarEsquina(posAv, posCa)
+    EnviarMensaje(ID, fiscal)
+    EnviarMensaje(flores, fiscal)      
+  fin  
+
+  robot tipo2
+  variables
+    flores: numero
+    posAv, posCa: numero
+    posInicial: numero
+    ID, maxID, max: numero
+  comenzar
+    maxID:= 0
+    max:= -1
+    EnviarMensaje(1, bee1)
+    EnviarMensaje(2, bee2)
+    EnviarMensaje(3, bee3)
+    EnviarMensaje(4, bee4)
+    
+    Random(posAv, 2,10)
+    Random(posCa, 2,10)
+    
+    EnviarMensaje(posAv, bee1)
+    EnviarMensaje(posCa, bee1)                                
+    EnviarMensaje(posAv, bee2)
+    EnviarMensaje(posCa, bee2)                 
+                   
+    EnviarMensaje(posAv, bee3)
+    EnviarMensaje(posCa, bee3)                                
+    EnviarMensaje(posAv, bee4)
+    EnviarMensaje(posCa, bee4)                                
+    
+    repetir 4
+      RecibirMensaje(ID, *)
+      si(ID = 1)
+        RecibirMensaje(flores, bee1) 
+      sino 
+        si(ID = 2)
+          RecibirMensaje(flores, bee2)
+        sino 
+          si(ID = 3)
+            RecibirMensaje(flores, bee3)
+          sino 
+            RecibirMensaje(flores, bee4)
+      maximo(maxID, max, flores, ID)
+    si(maxID <> 0)
+      Informar(maxID) 
+  fin  
+
+variables
+  bee1: tipo1
+  bee2: tipo1
+  bee3: tipo1
+  bee4: tipo1
+  fiscal: tipo2
+
+comenzar
+  AsignarArea(fiscal, zonaF)
+  AsignarArea(bee1, zona1)
+  AsignarArea(bee2, zona1)  
+  AsignarArea(bee3, zona1)
+  AsignarArea(bee4, zona1)
+  AsignarArea(bee1, zona2)
+  AsignarArea(bee2, zona2)  
+  AsignarArea(bee3, zona2)
+  AsignarArea(bee4, zona2)
+  Iniciar(fiscal, 1,1)
+  Iniciar(bee1, 2,1)
+  Iniciar(bee2, 3,1)
+  Iniciar(bee3, 4,1)
+  Iniciar(bee4, 5,1) 
+fin
+
+
+

@@ -1,0 +1,122 @@
+{
+b. Modifique el programa anterior para que cada equipo repita el recorrido con las
+siguientes 20 esquinas de sus correspondientes calles.
+}
+
+programa Ejercicio3b
+procesos 
+  proceso juntarPapeles(ES papeles: numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:= papeles + 1
+  fin
+  
+  proceso juntarFlores(ES flores: numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+  
+  proceso levantarPapeles(ES papeles: numero)
+  comenzar
+    papeles:= 0
+    juntarPapeles(papeles)
+    repetir 9
+      mover
+      juntarPapeles(papeles)
+  fin
+  
+  proceso levantarFlores(ES flores: numero)
+  comenzar
+    flores:= 0
+    juntarFlores(flores)
+    repetir 9
+      mover
+      juntarFlores(flores)
+  fin
+  
+  proceso sumarTotal(E total: numero; E objetos: numero)
+  comenzar
+    total:= total + objetos
+    Informar(total)
+  fin 
+  
+areas
+  zonaA: AreaPC(1,1,40,1)
+  zonaB: AreaPC(1,5,40,5)
+  
+  
+robots
+  robot tipoA
+  variables
+    papeles, total: numero
+  comenzar
+    derecha
+    si(PosAv = 1)
+      levantarPapeles(papeles)
+    si(PosAv = 11)
+      RecibirMensaje(total, beeA1)
+      levantarPapeles(papeles)
+      sumarTotal(total, papeles)
+      EnviarMensaje(papeles, beeA1)
+      Pos(PosAv + 11, PosCa)
+      RecibirMensaje(total, beeA1)
+      levantarPapeles(papeles)
+      sumarTotal(total, papeles)
+    si(PosAv = 10)
+      EnviarMensaje(papeles, beeA2)
+      Pos(PosAv + 11, PosCa)
+      RecibirMensaje(papeles, beeA2)
+      total:= 0
+      levantarPapeles(papeles)
+      EnviarMensaje(papeles, beeA2)
+  fin   
+
+
+  robot tipoB
+  variables
+    flores, total: numero
+  comenzar
+    derecha
+    si(PosAv = 1)
+      levantarFlores(flores)
+    si(PosAv = 11)
+      RecibirMensaje(total, beeB1)
+      levantarFlores(flores)
+      sumarTotal(total, flores)
+      EnviarMensaje(flores, beeB1)
+      Pos(PosAv + 11, PosCa)
+      RecibirMensaje(total, beeB1)
+      levantarFlores(flores)
+      sumarTotal(total, flores)
+    si(PosAv = 10)
+      EnviarMensaje(flores, beeB2)
+      Pos(PosAv + 11, PosCa)
+      RecibirMensaje(flores, beeB2)
+      total:= 0
+      levantarFlores(flores)
+      EnviarMensaje(flores, beeB2)
+  fin   
+
+
+variables
+  beeA1: tipoA
+  beeB1: tipoB
+  beeA2: tipoA
+  beeB2: tipoB
+
+comenzar
+  AsignarArea(beeA1, zonaA)
+  AsignarArea(beeA2, zonaA)
+  AsignarArea(beeB1, zonaB)
+  AsignarArea(beeB2, zonaB)
+  Iniciar(beeA1, 1,1)
+  Iniciar(beeB1, 1,5)
+  Iniciar(beeA2, 11,1)
+  Iniciar(beeB2, 11,5)
+fin  
+  
+  
+

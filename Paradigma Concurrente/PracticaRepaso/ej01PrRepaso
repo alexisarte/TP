@@ -1,0 +1,118 @@
+programa ej01PrRepaso
+procesos
+  proceso juntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor  
+  fin
+
+areas
+  zonaCer0: AreaP(1,1,1,1)
+  zona1: AreaP(2,1,2,1)
+  zona2: AreaP(3,1,3,1)
+  zona3: AreaP(14,1,14,1)
+  zona4: AreaP(15,1,15,1)
+  zona5: AreaPC(2,2,12,12)
+  zona6: AreaPC(14,2,24,12)  
+  zona13: AreaPC(13,13,13,13)
+
+robots
+  robot tipoFlor
+  variables
+    posAv, posCa, posInicial, ID, pos: numero
+  comenzar
+    posInicial:= PosAv
+    RecibirMensaje(ID, jefe)
+    repetir 3
+      Random(posAv, posInicial, posInicial + 10)
+      Random(posCa, 2,12)
+      BloquearEsquina(posAv, posCa)
+      Pos(posAv, posCa)
+      juntarFlores
+      Pos(posInicial, 1)
+      LiberarEsquina(posAv, posCa)
+    EnviarMensaje(ID, jefe)  
+  fin
+  
+  robot tipoPapel
+  variables
+    posAv, posCa, posInicial, ID: numero
+  comenzar
+    posInicial:= PosAv 
+    RecibirMensaje(ID, jefe)
+    repetir 5
+      Random(posAv, posInicial - 1, posInicial + 9)
+      Random(posCa, 2,12)
+      BloquearEsquina(13,13)
+      Pos(13,13)
+      si(HayPapelEnLaEsquina)
+        tomarPapel
+      BloquearEsquina(posAv, posCa)
+      Pos(posAv, posCa)
+      LiberarEsquina(13,13)
+      si(HayPapelEnLaBolsa)
+        depositarPapel
+      Pos(posInicial, 1)
+      LiberarEsquina(posAv, posCa)
+    EnviarMensaje(ID, jefe)  
+  fin
+  
+  robot tipoJefe
+  variables
+    ID, EQ1, EQ2, ganador: numero
+  comenzar
+    EnviarMensaje(1, florero1)
+    EnviarMensaje(2, florero2)
+    EnviarMensaje(2, papelero2)
+    EnviarMensaje(1, papelero1)
+    
+    EQ1:= 0
+    EQ2:= 0
+    ganador:= 0
+    repetir 3
+      RecibirMensaje(ID,*)
+      si(ID = 1)
+        si(EQ1 = 1)
+          ganador:= 1
+        sino
+          EQ1:= EQ1 + 1
+      sino
+        si(EQ2 = 1)
+          ganador:= 2
+        sino
+          EQ2:= EQ2 + 1
+    RecibirMensaje(ID,*)
+    Informar(ganador)
+  fin
+  
+variables
+  florero1: tipoFlor
+  florero2: tipoFlor
+  papelero1: tipoPapel
+  papelero2: tipoPapel  
+  jefe: tipoJefe
+comenzar 
+  AsignarArea(jefe, zonaCer0) 
+  
+  AsignarArea(florero1, zona1) 
+  AsignarArea(papelero1, zona2)
+  AsignarArea(florero2, zona3) 
+  AsignarArea(papelero2, zona4) 
+  
+  AsignarArea(florero1, zona5) 
+  AsignarArea(papelero1, zona5)
+  
+  AsignarArea(florero2, zona6) 
+  AsignarArea(papelero2, zona6)
+  
+  AsignarArea(papelero1, zona13)
+  AsignarArea(papelero2, zona13)
+  
+  Iniciar(jefe, 1,1)
+  Iniciar(florero1, 2,1)
+  Iniciar(papelero1, 3,1)
+  Iniciar(florero2, 14,1)
+  Iniciar(papelero2, 15,1)
+fin  
+
+
